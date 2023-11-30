@@ -25,11 +25,12 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
 
     const courseCollection =client.db('learnDB').collection('courses');
     const usersCollection =client.db('learnDB').collection('users');
     const teachersrequestCollection =client.db('learnDB').collection('teachers');
+    const enrolledCourseCollection =client.db('learnDB').collection('enrolled');
 
 
      //jwt related api
@@ -144,7 +145,13 @@ app.delete('/course/:id', async(req, res) =>{
   res.send(result);
 })
 
-
+app.post('/enroll/:id', async(req, res)=>{
+  const id = req.params.id;
+  
+  const filter = courseCollection.findOne(id);
+  const result = await enrolledCourseCollection.insertOne(filter);
+  res.send(result);
+})
 
 
 
@@ -283,24 +290,15 @@ app.get('/users/teacher/:email', async(req, res)=>{
 
 
 
-
-
-
-
-
-
-
-
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
   }
 }
 run().catch(console.dir);
-
 
 
 
