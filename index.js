@@ -3,7 +3,7 @@ const cors = require('cors');
 require('dotenv').config()
 var jwt = require('jsonwebtoken');
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 
 //middleware
 app.use(cors());
@@ -147,9 +147,10 @@ app.delete('/course/:id', async(req, res) =>{
 
 app.post('/enroll/:id', async(req, res)=>{
   const id = req.params.id;
-  
-  const filter = courseCollection.findOne(id);
-  const result = await enrolledCourseCollection.insertOne(filter);
+  console.log(id);
+  const filter = {_id:new ObjectId (id)};
+  const course = await courseCollection.findOne(filter);
+  const result = await enrolledCourseCollection.insertOne(course);
   res.send(result);
 })
 
