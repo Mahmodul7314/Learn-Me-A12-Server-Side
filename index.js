@@ -145,6 +145,8 @@ app.delete('/course/:id', async(req, res) =>{
   res.send(result);
 })
 
+
+//enrolled course 
 app.post('/enroll/:id', async(req, res)=>{
   const id = req.params.id;
   console.log(id);
@@ -154,6 +156,10 @@ app.post('/enroll/:id', async(req, res)=>{
   res.send(result);
 })
 
+app.get('/enrollclass',async(req, res)=>{
+  const result = await enrolledCourseCollection.find().toArray();
+  res.send(result)
+})
 
 
 
